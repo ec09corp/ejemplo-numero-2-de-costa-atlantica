@@ -1,0 +1,6 @@
+{
+  "name": "Delicias del Atlántico - Menú Digital",
+  "description": "Menú digital profesional de mariscos y ceviches para Delicias del Atlántico. Ordena en línea y envía tu pedido por WhatsApp.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
