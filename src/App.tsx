@@ -13,7 +13,8 @@ import { FloatingCartBar } from './components/FloatingCartBar';
 import { CartDrawer } from './components/CartDrawer';
 import { ProductDetailModal } from './components/ProductDetailModal';
 import { SettingsModal } from './components/SettingsModal';
-import { Utensils, MessageCircle, MapPin, Clock, Share2, Check } from 'lucide-react';
+import { QRCodeModal } from './components/QRCodeModal';
+import { Utensils, MessageCircle, MapPin, Clock, Share2, Check, QrCode } from 'lucide-react';
 
 const CART_STORAGE_KEY = 'delicias_atlantico_cart';
 const CONFIG_STORAGE_KEY = 'delicias_atlantico_config';
@@ -68,6 +69,7 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isQRModalOpen, setIsQRModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [copiedLink, setCopiedLink] = useState(false);
 
@@ -237,8 +239,7 @@ export default function App() {
         cartCount={totalCartItems}
         cartTotal={totalCartPrice}
         onOpenCart={() => setIsCartOpen(true)}
-        onOpenSettings={() => setIsSettingsOpen(true)}
-        whatsappDisplay={config.whatsappDisplay}
+        onOpenQR={() => setIsQRModalOpen(true)}
       />
 
       {/* 2. Brand Visual Top Banner (Logo -> DELICIAS DEL ATLÁNTICO -> Search) */}
@@ -383,14 +384,23 @@ export default function App() {
             </span>
             <span className="flex items-center gap-1">
               <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
-              Pedidos WhatsApp: {config.whatsappDisplay}
+              Pedidos directos por WhatsApp
             </span>
           </div>
 
-          <div className="flex items-center gap-3 mt-2">
+          <div className="flex flex-wrap items-center justify-center gap-2.5 mt-2">
+            <button
+              id="btn-footer-qrcode"
+              onClick={() => setIsQRModalOpen(true)}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-cyan-50 hover:bg-cyan-100 text-cyan-900 font-bold text-xs cursor-pointer transition-colors border border-cyan-200"
+            >
+              <QrCode className="w-3.5 h-3.5 text-cyan-700" />
+              <span>Ver Código QR</span>
+            </button>
+
             <button
               onClick={handleShareMenu}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-200/80 hover:bg-slate-300/80 text-slate-800 font-semibold cursor-pointer transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-200/80 hover:bg-slate-300/80 text-slate-800 font-semibold text-xs cursor-pointer transition-colors"
             >
               {copiedLink ? (
                 <>
@@ -400,16 +410,16 @@ export default function App() {
               ) : (
                 <>
                   <Share2 className="w-3.5 h-3.5 text-slate-600" />
-                  <span>Compartir Carta Digital</span>
+                  <span>Compartir Carta</span>
                 </>
               )}
             </button>
 
             <button
               onClick={() => setIsSettingsOpen(true)}
-              className="text-[11px] font-semibold text-cyan-700 hover:text-cyan-900 underline cursor-pointer"
+              className="text-[11px] font-semibold text-cyan-700 hover:text-cyan-900 underline cursor-pointer px-2"
             >
-              Configurar WhatsApp / Platos
+              Configurar Platos
             </button>
           </div>
 
@@ -455,6 +465,13 @@ export default function App() {
         categories={CATEGORIES}
         onToggleAvailability={handleToggleAvailability}
         onAddProduct={handleAddProduct}
+      />
+
+      {/* 9. QR Code Modal */}
+      <QRCodeModal
+        isOpen={isQRModalOpen}
+        onClose={() => setIsQRModalOpen(false)}
+        restaurantName={config.name}
       />
     </div>
   );

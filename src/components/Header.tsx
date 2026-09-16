@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShoppingBag, Settings2, MessageCircle } from 'lucide-react';
+import { ShoppingBag, QrCode } from 'lucide-react';
 import { Logo } from './Logo';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -7,16 +7,14 @@ interface HeaderProps {
   cartCount: number;
   cartTotal: number;
   onOpenCart: () => void;
-  onOpenSettings: () => void;
-  whatsappDisplay: string;
+  onOpenQR: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   cartCount,
   cartTotal,
   onOpenCart,
-  onOpenSettings,
-  whatsappDisplay,
+  onOpenQR,
 }) => {
   return (
     <header
@@ -29,19 +27,21 @@ export const Header: React.FC<HeaderProps> = ({
           <Logo size="md" variant="compact" />
         </div>
 
-        {/* Right side actions: WhatsApp Orders badge & Cart button */}
-        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
-          {/* Direct WhatsApp info button */}
-          <button
-            id="btn-header-config-whatsapp"
-            onClick={onOpenSettings}
-            title={`Pedidos por WhatsApp: ${whatsappDisplay}. Clic para configurar`}
-            className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-semibold text-emerald-300 bg-emerald-950/40 hover:bg-emerald-900/50 border border-emerald-500/30 transition-colors cursor-pointer"
+        {/* Right side actions: QR Code button & Cart button */}
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          {/* QR Code button in the top right corner */}
+          <motion.button
+            id="btn-header-qrcode"
+            whileTap={{ scale: 0.94 }}
+            onClick={onOpenQR}
+            title="Ver Código QR para escanear en mesa o celular"
+            aria-label="Abrir código QR del menú"
+            className="flex items-center gap-1.5 sm:gap-2 px-3 py-2 rounded-full text-xs font-bold text-cyan-200 bg-white/10 hover:bg-white/20 active:bg-white/25 border border-cyan-400/40 shadow-sm transition-colors cursor-pointer"
           >
-            <MessageCircle className="w-3.5 h-3.5 text-[#25D366] fill-[#25D366]/20" />
-            <span className="hidden md:inline">WhatsApp: {whatsappDisplay}</span>
-            <Settings2 className="w-3 h-3 text-emerald-400/80 ml-0.5" />
-          </button>
+            <QrCode className="w-4 h-4 text-cyan-300 shrink-0" />
+            <span className="hidden xs:inline">Código QR</span>
+            <span className="xs:hidden">QR</span>
+          </motion.button>
 
           {/* Cart Icon in top-right corner */}
           <motion.button
@@ -68,7 +68,7 @@ export const Header: React.FC<HeaderProps> = ({
               </AnimatePresence>
             </div>
 
-            {/* Total display on larger screens / mobile compact */}
+            {/* Total display */}
             <span className="text-xs font-bold tracking-tight pr-0.5">
               {cartCount > 0 ? (
                 <span>${cartTotal.toFixed(2)}</span>

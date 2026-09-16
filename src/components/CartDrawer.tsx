@@ -7,7 +7,6 @@ import {
   Minus, 
   ShoppingBag, 
   MessageCircle, 
-  Settings2,
   Receipt,
   UtensilsCrossed
 } from 'lucide-react';
@@ -32,36 +31,15 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   onRemoveItem,
   onClearCart,
   config,
-  onUpdateConfig,
 }) => {
   const [customerInfo, setCustomerInfo] = useState('');
   const [orderNotes, setOrderNotes] = useState('');
-  const [isEditingPhone, setIsEditingPhone] = useState(false);
-  const [tempPhone, setTempPhone] = useState(config.whatsappNumber);
 
   const totalItems = items.reduce((acc, item) => acc + item.quantity, 0);
   const subtotal = items.reduce(
     (acc, item) => acc + item.product.price * item.quantity,
     0
   );
-
-  const handleSavePhone = (e: React.FormEvent) => {
-    e.preventDefault();
-    let cleanDigits = tempPhone.replace(/\D/g, '');
-    if (cleanDigits.length === 8 && !cleanDigits.startsWith('507')) {
-      cleanDigits = `507${cleanDigits}`;
-    }
-    if (cleanDigits.length >= 7) {
-      const display = cleanDigits.startsWith('507') && cleanDigits.length === 11
-        ? `${cleanDigits.slice(3, 7)}-${cleanDigits.slice(7)}`
-        : cleanDigits;
-      onUpdateConfig({
-        whatsappNumber: cleanDigits,
-        whatsappDisplay: display,
-      });
-      setIsEditingPhone(false);
-    }
-  };
 
   const generateWhatsAppMessage = (): string => {
     let msg = `Hola, ${config.name}.\n\nQuiero realizar el siguiente pedido:\n\n`;
@@ -274,42 +252,6 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                       onChange={(e) => setOrderNotes(e.target.value)}
                       className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-cyan-500"
                     />
-                  </div>
-
-                  {/* WhatsApp configuration accordion / helper */}
-                  <div className="bg-cyan-50/70 border border-cyan-200/80 rounded-xl p-2.5 text-xs text-cyan-950 flex flex-col gap-1.5">
-                    <div className="flex items-center justify-between">
-                      <span className="font-semibold text-cyan-900 flex items-center gap-1.5">
-                        <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
-                        Enviar a: {config.whatsappDisplay}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => setIsEditingPhone(!isEditingPhone)}
-                        className="text-[11px] font-bold text-cyan-700 hover:text-cyan-900 underline flex items-center gap-0.5 cursor-pointer"
-                      >
-                        <Settings2 className="w-3 h-3" />
-                        {isEditingPhone ? 'Cancelar' : 'Cambiar #'}
-                      </button>
-                    </div>
-
-                    {isEditingPhone && (
-                      <form onSubmit={handleSavePhone} className="mt-1 flex gap-1.5">
-                        <input
-                          type="text"
-                          value={tempPhone}
-                          onChange={(e) => setTempPhone(e.target.value)}
-                          placeholder="Ej. 69077740"
-                          className="flex-1 bg-white border border-cyan-300 rounded-lg px-2 py-1 text-xs text-slate-800 focus:outline-none"
-                        />
-                        <button
-                          type="submit"
-                          className="bg-cyan-700 text-white px-2.5 py-1 rounded-lg text-xs font-bold hover:bg-cyan-800 cursor-pointer"
-                        >
-                          Guardar
-                        </button>
-                      </form>
-                    )}
                   </div>
                 </div>
               )}
