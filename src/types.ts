@@ -1,9 +1,11 @@
 export type CategoryId = 
+  | 'ejecutivo'
   | 'ceviches' 
-  | 'camarones' 
+  | 'entradas'
   | 'pescados' 
   | 'mariscos' 
   | 'platos-fuertes' 
+  | 'picadas'
   | 'combos' 
   | 'bebidas';
 

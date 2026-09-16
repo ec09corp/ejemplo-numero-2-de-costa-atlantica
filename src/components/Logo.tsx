@@ -52,10 +52,8 @@ export const Logo: React.FC<LogoProps> = ({
         <span className="font-['Outfit'] font-black tracking-tight text-white text-sm sm:text-base leading-none truncate">
           DELICIAS DEL ATLÁNTICO
         </span>
-        <span className="text-[10px] sm:text-[11px] font-bold tracking-wider text-cyan-300 uppercase mt-0.5 flex items-center gap-1">
-          <span>MENÚ DIGITAL</span>
-          <span className="inline-block w-1 h-1 rounded-full bg-cyan-400"></span>
-          <span className="text-[9px] text-cyan-200 font-normal">PEDIDOS POR WHATSAPP</span>
+        <span className="text-[10px] sm:text-[11px] font-bold tracking-wider text-cyan-300 uppercase mt-0.5">
+          MENÚ DIGITAL
         </span>
       </div>
     </div>

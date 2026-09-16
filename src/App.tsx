@@ -18,7 +18,7 @@ import { Utensils, MessageCircle, MapPin, Clock, Share2, Check, QrCode } from 'l
 
 const CART_STORAGE_KEY = 'delicias_atlantico_cart';
 const CONFIG_STORAGE_KEY = 'delicias_atlantico_config';
-const PRODUCTS_STORAGE_KEY = 'delicias_atlantico_products';
+const PRODUCTS_STORAGE_KEY = 'delicias_atlantico_products_v3';
 
 export default function App() {
   // 1. Restaurant Configuration State
@@ -48,7 +48,13 @@ export default function App() {
   const [products, setProducts] = useState<Product[]>(() => {
     try {
       const saved = localStorage.getItem(PRODUCTS_STORAGE_KEY);
-      return saved ? JSON.parse(saved) : INITIAL_PRODUCTS;
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length >= 20) {
+          return parsed;
+        }
+      }
+      return INITIAL_PRODUCTS;
     } catch {
       return INITIAL_PRODUCTS;
     }
@@ -65,7 +71,7 @@ export default function App() {
   });
 
   // 4. Navigation & View states
-  const [activeCategory, setActiveCategory] = useState<CategoryId>('ceviches');
+  const [activeCategory, setActiveCategory] = useState<CategoryId>('ejecutivo');
   const [searchQuery, setSearchQuery] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
